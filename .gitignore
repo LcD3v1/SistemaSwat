@@ -13,6 +13,10 @@ dist/
 # Dados persistidos em disco (não versionar dados de produção)
 backend/data.json
 
+# Log de auditoria de segurança
+backend/audit.log
+*.log
+
 # Chaves de serviço
 serviceAccountKey.json
 **/serviceAccountKey.json

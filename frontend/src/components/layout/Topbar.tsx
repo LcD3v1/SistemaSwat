@@ -16,7 +16,7 @@ const PAGE_TITLES: Record<string, string> = {
 }
 
 export default function Topbar() {
-  const { user, clearAuth } = useAuthStore()
+  const { user, logout } = useAuthStore()
   const { toggleSidebar } = useUIStore()
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -24,8 +24,8 @@ export default function Topbar() {
 
   const { data: logoData } = useLogo()
 
-  function handleLogout() {
-    clearAuth()
+  async function handleLogout() {
+    await logout()
     navigate('/login')
   }
 
