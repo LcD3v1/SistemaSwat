@@ -6,6 +6,7 @@ import Sidebar from './Sidebar'
 import Topbar from './Topbar'
 import ToastContainer from '@/components/ui/ToastNotification'
 import ScanlineOverlay from '@/components/ui/ScanlineOverlay'
+import HudFrame from '@/components/ui/HudFrame'
 import api from '@/lib/axios'
 import { useAuthStore } from '@/store/authStore'
 import { tacticalReveal } from '@/lib/motion'
@@ -21,14 +22,17 @@ export default function AppShell() {
   }, [token])
 
   return (
-    <div className="flex h-screen bg-bg overflow-hidden">
+    <div className="relative flex h-screen overflow-hidden">
+      <div className="tactical-backdrop" />
       <ScanlineOverlay />
-      <Sidebar />
+      <HudFrame />
+      <div className="relative z-10 flex flex-1 min-w-0 overflow-hidden">
+        <Sidebar />
 
-      <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
-        <Topbar />
+        <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
+          <Topbar />
 
-        <main className="flex-1 overflow-y-auto overflow-x-hidden">
+          <main className="flex-1 overflow-y-auto overflow-x-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -41,7 +45,8 @@ export default function AppShell() {
               <Outlet />
             </motion.div>
           </AnimatePresence>
-        </main>
+          </main>
+        </div>
       </div>
 
       <ToastContainer />

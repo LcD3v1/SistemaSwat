@@ -300,6 +300,154 @@ input[type=range].hud-slider::-moz-range-thumb {
   margin-left: 2px;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   TACTICAL HUD REDESIGN v3
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Fundo tático global (textura HUD gerada) ───────────────────── */
+.tactical-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(rgba(5, 5, 5, 0.70), rgba(5, 5, 5, 0.90)),
+    url('/textures/hud-texture.webp');
+  background-size: cover;
+  background-position: center;
+}
+.tactical-backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 38%, transparent 42%, rgba(5, 5, 5, 0.60) 100%);
+}
+
+/* ── Moldura HUD do viewport (cantos em L) ───────────────────────── */
+.hud-frame {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.hud-frame > span {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: rgba(201, 162, 39, 0.5);
+  border-style: solid;
+  border-width: 0;
+}
+.hud-frame .tl { top: 7px;    left: 7px;  border-top-width: 2px;    border-left-width: 2px; }
+.hud-frame .tr { top: 7px;    right: 7px; border-top-width: 2px;    border-right-width: 2px; }
+.hud-frame .bl { bottom: 7px; left: 7px;  border-bottom-width: 2px; border-left-width: 2px; }
+.hud-frame .br { bottom: 7px; right: 7px; border-bottom-width: 2px; border-right-width: 2px; }
+
+/* ── Brackets de canto nos cards (aparecem no hover) ─────────────── */
+.cyber-card-wrap::before,
+.cyber-card-wrap::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--gold);
+  border-style: solid;
+  border-width: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 3;
+  pointer-events: none;
+}
+.cyber-card-wrap::before { top: -2px;    right: -2px; border-top-width: 2px;    border-right-width: 2px; }
+.cyber-card-wrap::after  { bottom: -2px; left: -2px;  border-bottom-width: 2px; border-left-width: 2px; }
+.cyber-card-wrap:hover::before,
+.cyber-card-wrap:hover::after { opacity: 0.9; }
+
+/* ── Scan sweep animado dentro do card (no hover) ────────────────── */
+.card-hud {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+.card-hud::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.9), transparent);
+  opacity: 0;
+}
+.cyber-card-wrap:hover .card-hud::before {
+  animation: cardScan 2.2s linear infinite;
+}
+@keyframes cardScan {
+  0%   { top: 0%;   opacity: 0; }
+  15%  { opacity: 0.75; }
+  85%  { opacity: 0.75; }
+  100% { top: 100%; opacity: 0; }
+}
+
+/* ── Status dot pulsante (readouts HUD) ──────────────────────────── */
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: statusPulse 1.6s ease-in-out infinite;
+}
+.status-dot.gold { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.25; }
+}
+
+/* ── Divisor tático (cabeçalhos de página) ───────────────────────── */
+.tactical-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg,
+    var(--gold) 0%,
+    rgba(201, 162, 39, 0.18) 28%,
+    transparent 70%);
+}
+
+/* ── Fundo cinematográfico da tela de login ──────────────────────── */
+.login-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(180deg,
+      rgba(5, 5, 5, 0.82) 0%,
+      rgba(5, 5, 5, 0.95) 40%,
+      rgba(5, 5, 5, 0.88) 62%,
+      rgba(5, 5, 5, 0.66) 100%),
+    url('/textures/login-bg.webp');
+  background-size: cover;
+  background-position: center bottom;
+}
+
+/* ── Ticker de leitura (topbar) ──────────────────────────────────── */
+.hud-readout {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--txt2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-hud::before,
+  .status-dot,
+  .logo-ring,
+  .pulse-gold { animation: none !important; }
+}
+
 /* ── Entrada de linha (compatível com dnd-kit) ──────────────────── */
 @keyframes rowFadeIn {
   from { opacity: 0; transform: translateY(4px); }

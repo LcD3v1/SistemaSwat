@@ -23,6 +23,7 @@ export default function GlowCard({ children, className = '', onClick, index, int
       variants={index !== undefined ? staggerItem : undefined}
     >
       <div className="cyber-card">
+        <span className="card-hud" aria-hidden="true" />
         {children}
       </div>
     </motion.div>

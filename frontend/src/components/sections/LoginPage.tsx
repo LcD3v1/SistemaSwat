@@ -89,7 +89,14 @@ export default function LoginPage() {
 
   return (
     <div className="relative h-screen w-screen bg-bg flex flex-col items-center justify-center overflow-hidden">
+      {/* Fundo cinematográfico tático */}
+      <div className="login-bg" />
       <ScanlineOverlay />
+
+      {/* Moldura HUD */}
+      <div className="hud-frame" aria-hidden="true">
+        <span className="tl" /><span className="tr" /><span className="bl" /><span className="br" />
+      </div>
 
       {/* Partículas */}
       <ParticlesProvider init={loadSlim}>

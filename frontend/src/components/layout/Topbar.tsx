@@ -1,9 +1,28 @@
+import { useEffect, useState } from 'react'
 import { LogOut, Menu, Eye } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
 import { useLogo } from '@/hooks/useConfig'
 import RoleBadge from '@/components/ui/RoleBadge'
+
+function HudClock() {
+  const [now, setNow] = useState(() => new Date())
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(id)
+  }, [])
+  const time = now.toLocaleTimeString('pt-BR', { hour12: false })
+  return (
+    <div className="hidden md:flex items-center gap-4">
+      <div className="flex items-center gap-1.5">
+        <span className="status-dot" />
+        <span className="hud-readout">SISTEMA ONLINE</span>
+      </div>
+      <span className="hud-readout tabular-nums text-txt">{time}</span>
+    </div>
+  )
+}
 
 const PAGE_TITLES: Record<string, string> = {
   '/dashboard':        'DASHBOARD',
@@ -31,7 +50,7 @@ export default function Topbar() {
   }
 
   return (
-    <header className="h-14 bg-sb border-b border-bdr flex items-center px-4 gap-3 shrink-0">
+    <header className="h-14 bg-sb/90 backdrop-blur-sm border-b border-gold/15 flex items-center px-4 gap-3 shrink-0">
       <button
         onClick={toggleSidebar}
         className="text-txt2 hover:text-gold transition-colors p-1"
@@ -51,9 +70,13 @@ export default function Topbar() {
         )}
       </div>
 
-      <h1 className="font-orbitron text-sm font-bold text-gold tracking-widest flex-1">
+      <h1 className="font-orbitron text-sm font-bold text-gold tracking-widest">
         {title}
       </h1>
+
+      <div className="flex-1 flex justify-center">
+        <HudClock />
+      </div>
 
       {/* Badge view only — visível e permanente */}
       {isViewOnly && (
