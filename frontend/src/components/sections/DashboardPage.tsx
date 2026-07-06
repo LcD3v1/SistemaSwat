@@ -167,10 +167,10 @@ export default function DashboardPage() {
         className="grid grid-cols-5 gap-4"
       >
         <StatCard icon={Activity}       label="% DO MÊS"             value={stats.monthWinRate} color="#c9a227" suffix="%" />
-        <StatCard icon={TrendingUp}     label="MEMBROS ATIVOS"       value={stats.ativos} color="#27ae60" />
-        <StatCard icon={Users}          label="WIN RATE SWAT"        value={stats.tacticalWinRate} color="#2980b9" suffix="%" />
-        <StatCard icon={UserPlus}       label="WIN RATE EXTERNOS"    value={stats.externalWinRate} color="#ddbb4a" suffix="%" />
-        <StatCard icon={AlertTriangle}  label="COM ADVERTÊNCIAS"     value={stats.comAdv} color="#c0392b" />
+        <StatCard icon={TrendingUp}     label="MEMBROS ATIVOS"       value={stats.ativos} color="#c9a227" />
+        <StatCard icon={Users}          label="WIN RATE SWAT"        value={stats.tacticalWinRate} color="#c9a227" suffix="%" />
+        <StatCard icon={UserPlus}       label="WIN RATE EXTERNOS"    value={stats.externalWinRate} color="#c9a227" suffix="%" />
+        <StatCard icon={AlertTriangle}  label="COM ADVERTÊNCIAS"     value={stats.comAdv} color="#c9a227" />
       </motion.div>
 
       <div className="grid grid-cols-3 gap-6">

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { LogOut, Menu, Eye } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/authStore'
@@ -6,20 +5,11 @@ import { useUIStore } from '@/store/uiStore'
 import { useLogo } from '@/hooks/useConfig'
 import RoleBadge from '@/components/ui/RoleBadge'
 
-function HudClock() {
-  const [now, setNow] = useState(() => new Date())
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000)
-    return () => clearInterval(id)
-  }, [])
-  const time = now.toLocaleTimeString('pt-BR', { hour12: false })
+function HudStatus() {
   return (
-    <div className="hidden md:flex items-center gap-4">
-      <div className="flex items-center gap-1.5">
-        <span className="status-dot" />
-        <span className="hud-readout">SISTEMA ONLINE</span>
-      </div>
-      <span className="hud-readout tabular-nums text-txt">{time}</span>
+    <div className="hidden md:flex items-center gap-1.5">
+      <span className="status-dot" />
+      <span className="hud-readout">SISTEMA ONLINE</span>
     </div>
   )
 }
@@ -75,7 +65,7 @@ export default function Topbar() {
       </h1>
 
       <div className="flex-1 flex justify-center">
-        <HudClock />
+        <HudStatus />
       </div>
 
       {/* Badge view only — visível e permanente */}
