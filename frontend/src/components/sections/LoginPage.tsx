@@ -89,8 +89,18 @@ export default function LoginPage() {
 
   return (
     <div className="relative h-screen w-screen bg-bg flex flex-col items-center justify-center overflow-hidden">
-      {/* Fundo cinematográfico tático */}
-      <div className="login-bg" />
+      {/* Fundo cinematográfico tático (vídeo com fallback de imagem) */}
+      <video
+        className="login-video"
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/textures/login-bg.webp"
+      >
+        <source src="/textures/login.mp4" type="video/mp4" />
+      </video>
+      <div className="login-video-overlay" />
       <ScanlineOverlay />
 
       {/* Moldura HUD */}

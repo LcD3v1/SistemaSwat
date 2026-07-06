@@ -417,20 +417,37 @@ input[type=range].hud-slider::-moz-range-thumb {
     transparent 70%);
 }
 
-/* ── Fundo cinematográfico da tela de login ──────────────────────── */
+/* ── Fundo cinematográfico da tela de login (imagem/vídeo) ────────── */
 .login-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
   background-image:
     linear-gradient(180deg,
-      rgba(5, 5, 5, 0.82) 0%,
-      rgba(5, 5, 5, 0.95) 40%,
-      rgba(5, 5, 5, 0.88) 62%,
-      rgba(5, 5, 5, 0.66) 100%),
+      rgba(5, 5, 5, 0.55) 0%,
+      rgba(5, 5, 5, 0.68) 55%,
+      rgba(5, 5, 5, 0.86) 100%),
     url('/textures/login-bg.webp');
   background-size: cover;
   background-position: center bottom;
+}
+.login-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+.login-video-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg,
+    rgba(5, 5, 5, 0.52) 0%,
+    rgba(5, 5, 5, 0.66) 55%,
+    rgba(5, 5, 5, 0.86) 100%);
 }
 
 /* ── Ticker de leitura (topbar) ──────────────────────────────────── */
