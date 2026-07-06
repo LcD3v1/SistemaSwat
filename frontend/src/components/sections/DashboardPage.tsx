@@ -11,16 +11,8 @@ import GlowCard from '@/components/ui/GlowCard'
 import AnimatedCounter from '@/components/ui/AnimatedCounter'
 import LoadingHud from '@/components/ui/LoadingHud'
 import { calcWinRate, formatDate } from '@/lib/utils'
+import { staggerContainer, staggerItem } from '@/lib/motion'
 import type { Membro } from '@/types'
-
-const ITEM_VARIANTS = {
-  hidden: { opacity: 0, scale: 0.95, y: 8 },
-  visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.3 } },
-}
-const CONTAINER_VARIANTS = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.07 } },
-}
 
 const RESULTADO_COLORS: Record<string, string> = {
   'Vitória':      '#27ae60',
@@ -41,7 +33,7 @@ function StatCard({
   icon: React.ElementType; label: string; value: number; color: string; suffix?: string
 }) {
   return (
-    <motion.div variants={ITEM_VARIANTS}>
+    <motion.div variants={staggerItem}>
       <GlowCard>
         <div className="p-5 flex items-center gap-4">
           <div className={`w-12 h-12 rounded-lg flex items-center justify-center`}
@@ -169,7 +161,7 @@ export default function DashboardPage() {
 
       {/* Stat cards */}
       <motion.div
-        variants={CONTAINER_VARIANTS}
+        variants={staggerContainer}
         initial="hidden"
         animate="visible"
         className="grid grid-cols-5 gap-4"
@@ -256,7 +248,7 @@ export default function DashboardPage() {
               <p className="font-mono text-xs text-txt3 py-4 text-center">Nenhuma operação registrada</p>
             ) : (
               <motion.div
-                variants={CONTAINER_VARIANTS}
+                variants={staggerContainer}
                 initial="hidden"
                 animate="visible"
                 className="space-y-2"
@@ -264,7 +256,7 @@ export default function DashboardPage() {
                 {recentOps.map(op => (
                   <motion.div
                     key={op.id}
-                    variants={ITEM_VARIANTS}
+                    variants={staggerItem}
                     className="flex items-center gap-3 py-2 border-b border-bdr last:border-0"
                   >
                     <span
@@ -291,13 +283,13 @@ export default function DashboardPage() {
               <p className="font-mono text-xs text-txt3 py-4 text-center">Sem dados suficientes</p>
             ) : (
               <motion.div
-                variants={CONTAINER_VARIANTS}
+                variants={staggerContainer}
                 initial="hidden"
                 animate="visible"
                 className="space-y-3"
               >
                 {operatorRanking.map((op, idx) => (
-                  <motion.div key={op.id} variants={ITEM_VARIANTS} className="flex items-center gap-3">
+                  <motion.div key={op.id} variants={staggerItem} className="flex items-center gap-3">
                     <span className="font-orbitron text-xs w-5 text-txt3 shrink-0">#{idx + 1}</span>
                     <div className="flex-1 min-w-0">
                       <p className="font-mono text-xs text-txt truncate">{op.policial}</p>

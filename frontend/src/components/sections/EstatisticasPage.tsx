@@ -14,18 +14,10 @@ import GlowCard from '@/components/ui/GlowCard'
 import HudButton from '@/components/ui/HudButton'
 import LoadingHud from '@/components/ui/LoadingHud'
 import { calcWinRate } from '@/lib/utils'
+import { staggerContainer, staggerItem } from '@/lib/motion'
 import type { Membro, Acao } from '@/types'
 
 const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
-
-const ROW_VARIANTS = {
-  hidden: { opacity: 0, x: -10 },
-  visible: { opacity: 1, x: 0 },
-}
-const TABLE_VARIANTS = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.05 } },
-}
 
 const CustomTooltip = ({ active, payload, label }: {
   active?: boolean; payload?: Array<{ name: string; value: number; fill: string }>; label?: string
@@ -338,11 +330,11 @@ export default function EstatisticasPage() {
                   ))}
                 </tr>
               </thead>
-              <motion.tbody variants={TABLE_VARIANTS} initial="hidden" animate="visible">
+              <motion.tbody variants={staggerContainer} initial="hidden" animate="visible">
                 {operatorData.map(op => (
                   <motion.tr
                     key={op.nome}
-                    variants={ROW_VARIANTS}
+                    variants={staggerItem}
                     className="border-b border-bdr/50 hover:bg-bdr/30 transition-colors"
                   >
                     <td className="px-4 py-3 font-mono text-xs text-txt">{op.nome}</td>
@@ -385,11 +377,11 @@ export default function EstatisticasPage() {
                   ))}
                 </tr>
               </thead>
-              <motion.tbody variants={TABLE_VARIANTS} initial="hidden" animate="visible">
+              <motion.tbody variants={staggerContainer} initial="hidden" animate="visible">
                 {qruExtData.map((q, idx) => (
                   <motion.tr
                     key={q.qru}
-                    variants={ROW_VARIANTS}
+                    variants={staggerItem}
                     className="border-b border-bdr/50 hover:bg-bdr/30 transition-colors"
                   >
                     <td className="px-4 py-3 font-mono text-xs text-txt font-bold">{q.qru}</td>

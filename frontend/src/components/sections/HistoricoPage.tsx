@@ -10,6 +10,7 @@ import GlowCard from '@/components/ui/GlowCard'
 import HudButton from '@/components/ui/HudButton'
 import LoadingHud from '@/components/ui/LoadingHud'
 import { formatDate } from '@/lib/utils'
+import { staggerContainer, staggerItem } from '@/lib/motion'
 import type { Acao, Membro } from '@/types'
 import api from '@/lib/axios'
 import { downloadBlob } from '@/lib/utils'
@@ -119,7 +120,7 @@ export default function HistoricoPage() {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <motion.tbody variants={staggerContainer} initial="hidden" animate="visible">
               <AnimatePresence>
                 {acoes.length === 0 ? (
                   <tr>
@@ -131,6 +132,7 @@ export default function HistoricoPage() {
                   <motion.tr
                     key={acao.id}
                     layout
+                    variants={staggerItem}
                     exit={{ opacity: 0, x: 200 }}
                     transition={{ duration: 0.25 }}
                     className="border-b border-bdr/50 hover:bg-bdr/40 transition-colors group"
@@ -195,7 +197,7 @@ export default function HistoricoPage() {
                   </motion.tr>
                 ))}
               </AnimatePresence>
-            </tbody>
+            </motion.tbody>
           </table>
         </div>
 
