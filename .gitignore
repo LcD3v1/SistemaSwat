@@ -1,0 +1,42 @@
+# Dependências
+node_modules/
+**/node_modules/
+
+# Builds compilados
+dist/
+**/dist/
+
+# Variáveis de ambiente (contêm segredos)
+.env
+**/.env
+
+# Dados persistidos em disco (não versionar dados de produção)
+backend/data.json
+
+# Log de auditoria de segurança
+backend/audit.log
+*.log
+
+# Chaves de serviço
+serviceAccountKey.json
+**/serviceAccountKey.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Claude Code
+.claude/
+
+# SO
+.DS_Store
+Thumbs.db

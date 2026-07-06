@@ -1,0 +1,12 @@
+{
+  "name": "sistema-swat",
+  "version": "1.0.0",
+  "description": "Sistema de Gestão NPD S.W.A.T.",
+  "scripts": {
+    "build": "npm run install:all && cd frontend && npm run build && cd ../backend && npm run build",
+    "start": "npm run build && NODE_ENV=production node backend/dist/index.js",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install"
+  }
+}
