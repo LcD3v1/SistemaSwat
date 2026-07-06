@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type CSSProperties } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   DndContext, closestCenter, KeyboardSensor, PointerSensor,
@@ -80,6 +80,7 @@ function InlineCell({ field, value, canEdit, type = 'text', options, onSave }: I
 
 interface SortableRowProps {
   membro: Membro
+  index: number
   canEdit: boolean
   onUpdate: (id: number, data: Partial<Membro>) => void
   onDelete: (id: number) => void
@@ -87,17 +88,18 @@ interface SortableRowProps {
   cargos: string[]
 }
 
-function SortableRow({ membro, canEdit, onUpdate, onDelete, patentes, cargos }: SortableRowProps) {
+function SortableRow({ membro, index, canEdit, onUpdate, onDelete, patentes, cargos }: SortableRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: membro.id })
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-  }
+    '--row-i': index,
+  } as CSSProperties
 
   return (
-    <tr ref={setNodeRef} style={style} className="border-b border-bdr/50 hover:bg-bdr/30 transition-colors group">
+    <tr ref={setNodeRef} style={style} className="row-fade-in border-b border-bdr/50 hover:bg-bdr/30 transition-colors group">
       <td className="px-2 py-2.5 w-8">
         {canEdit && <DragHandle listeners={listeners as unknown as Record<string, unknown>} attributes={attributes as unknown as Record<string, unknown>} />}
       </td>
@@ -301,10 +303,11 @@ export default function MembrosPage() {
                       </td>
                     </tr>
                   ) : (
-                    orderedMembros.map(m => (
+                    orderedMembros.map((m, i) => (
                       <SortableRow
                         key={m.id}
                         membro={m}
+                        index={i}
                         canEdit={canEdit}
                         onUpdate={handleUpdate}
                         onDelete={handleDelete}

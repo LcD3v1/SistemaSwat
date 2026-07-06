@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState, type CSSProperties } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   DndContext, closestCenter, KeyboardSensor, PointerSensor,
   useSensor, useSensors, DragEndEvent,
@@ -29,6 +29,7 @@ import ModalOverlay from '@/components/ui/ModalOverlay'
 import LoadingHud from '@/components/ui/LoadingHud'
 import LogoUploader from '@/components/ui/LogoUploader'
 import DragHandle from '@/components/ui/DragHandle'
+import { tacticalReveal, staggerContainer, staggerItem } from '@/lib/motion'
 import type { CategoriaRecrutamento, Nivel } from '@/types'
 
 const TABS = [
@@ -43,9 +44,10 @@ const TABS = [
 const RANK: Record<Nivel, number> = { view_only: -1, membro: 0, moderador: 1, admin: 2 }
 
 function SortableListItem({
-  item, canEdit, onDelete, canReorder,
+  item, index, canEdit, onDelete, canReorder,
 }: {
   item: string
+  index: number
   canEdit: boolean
   onDelete: (v: string) => void
   canReorder: boolean
@@ -59,8 +61,9 @@ function SortableListItem({
         transform: CSS.Transform.toString(transform),
         transition,
         opacity: isDragging ? 0.55 : 1,
-      }}
-      className="flex items-center gap-2 px-3 py-2 bg-card2 border border-bdr rounded group"
+        '--row-i': index,
+      } as CSSProperties}
+      className="row-fade-in flex items-center gap-2 px-3 py-2 bg-card2 border border-bdr rounded group"
     >
       {canEdit && canReorder && (
         <DragHandle
@@ -132,10 +135,11 @@ function ListEditor({
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
             <SortableContext items={localItems} strategy={verticalListSortingStrategy}>
               <div className="space-y-1">
-                {localItems.map(item => (
+                {localItems.map((item, i) => (
                   <SortableListItem
                     key={item}
                     item={item}
+                    index={i}
                     canEdit={canEdit}
                     canReorder={canReorder}
                     onDelete={onDelete}
@@ -145,16 +149,22 @@ function ListEditor({
             </SortableContext>
           </DndContext>
         ) : (
-          localItems.map(item => (
-            <div key={item} className="flex items-center justify-between px-3 py-2 bg-card2 border border-bdr rounded group">
-              <span className="font-mono text-xs text-txt">{item}</span>
-              {canEdit && (
-                <button onClick={() => onDelete(item)} className="opacity-0 group-hover:opacity-100 text-txt3 hover:text-red transition-all">
-                  <Trash2 size={12} />
-                </button>
-              )}
-            </div>
-          ))
+          <motion.div variants={staggerContainer} initial="hidden" animate="visible">
+            {localItems.map(item => (
+              <motion.div
+                key={item}
+                variants={staggerItem}
+                className="flex items-center justify-between px-3 py-2 bg-card2 border border-bdr rounded group"
+              >
+                <span className="font-mono text-xs text-txt">{item}</span>
+                {canEdit && (
+                  <button onClick={() => onDelete(item)} className="opacity-0 group-hover:opacity-100 text-txt3 hover:text-red transition-all">
+                    <Trash2 size={12} />
+                  </button>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
         )}
         {localItems.length === 0 && (
           <p className="font-mono text-xs text-txt3 text-center py-4">Nenhum item cadastrado</p>
@@ -246,7 +256,15 @@ export default function ConfiguracoesPage() {
 
       {/* Conteúdo */}
       <GlowCard>
-        <div className="p-6">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={tacticalReveal.initial}
+            animate={tacticalReveal.animate}
+            exit={tacticalReveal.exit}
+            transition={tacticalReveal.transition}
+            className="p-6"
+          >
           {/* Logo */}
           {activeTab === 'logo' && (
             <LogoUploader currentLogo={logoData?.logo ?? ''} />
@@ -357,9 +375,9 @@ export default function ConfiguracoesPage() {
                     ))}
                   </tr>
                 </thead>
-                <tbody>
+                <motion.tbody variants={staggerContainer} initial="hidden" animate="visible">
                   {contas.map(conta => (
-                    <tr key={conta.id} className="border-b border-bdr/50 hover:bg-bdr/30 transition-colors">
+                    <motion.tr key={conta.id} variants={staggerItem} className="border-b border-bdr/50 hover:bg-bdr/30 transition-colors">
                       <td className="px-3 py-2.5 font-mono text-xs text-txt">{conta.username}</td>
                       <td className="px-3 py-2.5">
                         <select
@@ -400,14 +418,15 @@ export default function ConfiguracoesPage() {
                           </button>
                         )}
                       </td>
-                    </tr>
+                    </motion.tr>
                   ))}
-                </tbody>
+                </motion.tbody>
               </table>
             </div>
           )}
 
-        </div>
+          </motion.div>
+        </AnimatePresence>
       </GlowCard>
 
       {/* Modal Nova Conta */}

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, PlusCircle, History, BarChart2,
   Users, Settings, UserPlus, Eye,
@@ -7,6 +7,7 @@ import {
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
 import { useLogo } from '@/hooks/useConfig'
+import { DURATION, EASE_SHARP } from '@/lib/motion'
 import type { Nivel } from '@/types'
 
 const NAV_ITEMS = [
@@ -25,6 +26,7 @@ export default function Sidebar() {
   const { user } = useAuthStore()
   const { sidebarCollapsed } = useUIStore()
   const { data: logoData } = useLogo()
+  const location = useLocation()
 
   const isViewOnly = user?.nivel === 'view_only'
   const userRank = user ? (RANK[user.nivel] ?? -1) : 0
@@ -78,33 +80,39 @@ export default function Sidebar() {
 
       {/* Navegação */}
       <nav className="flex-1 py-4 flex flex-col gap-1 px-2 overflow-y-auto">
-        {visibleItems.map(item => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-all duration-200 group
-              ${isActive
-                ? 'bg-bdrg border-l-2 border-gold text-gold'
-                : 'text-txt2 hover:text-txt hover:bg-bdr border-l-2 border-transparent'
-              }`
-            }
-          >
-            <item.icon size={18} className="shrink-0" />
-            <AnimatePresence>
-              {!sidebarCollapsed && (
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="font-mono text-xs tracking-wide whitespace-nowrap overflow-hidden"
-                >
-                  {item.label}
-                </motion.span>
+        {visibleItems.map(item => {
+          const isActive = location.pathname === item.to
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={`relative flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors duration-200 group ${
+                isActive ? 'text-gold' : 'text-txt2 hover:text-txt hover:bg-bdr'
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="active-nav-indicator"
+                  className="absolute inset-0 bg-bdrg border-l-2 border-gold rounded-md"
+                  transition={{ duration: DURATION.base, ease: EASE_SHARP }}
+                />
               )}
-            </AnimatePresence>
-          </NavLink>
-        ))}
+              <item.icon size={18} className="relative shrink-0" />
+              <AnimatePresence>
+                {!sidebarCollapsed && (
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="relative font-mono text-xs tracking-wide whitespace-nowrap overflow-hidden"
+                  >
+                    {item.label}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </NavLink>
+          )
+        })}
       </nav>
 
       {/* Footer */}

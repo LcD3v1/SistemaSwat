@@ -299,3 +299,13 @@ input[type=range].hud-slider::-moz-range-thumb {
   color: var(--gold);
   margin-left: 2px;
 }
+
+/* ── Entrada de linha (compatível com dnd-kit) ──────────────────── */
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.row-fade-in {
+  animation: rowFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  animation-delay: calc(var(--row-i, 0) * 40ms);
+}
