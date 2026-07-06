@@ -11,7 +11,7 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import {
   Image, List, Briefcase, Radio, UserPlus, Users,
-  Plus, Trash2,
+  Plus, Trash2, Settings,
 } from 'lucide-react'
 import {
   useQrus, useAddQru, useDeleteQru, useReorderQrus,
@@ -29,6 +29,7 @@ import ModalOverlay from '@/components/ui/ModalOverlay'
 import LoadingHud from '@/components/ui/LoadingHud'
 import LogoUploader from '@/components/ui/LogoUploader'
 import DragHandle from '@/components/ui/DragHandle'
+import PageHeader from '@/components/ui/PageHeader'
 import { tacticalReveal, staggerContainer, staggerItem } from '@/lib/motion'
 import type { CategoriaRecrutamento, Nivel } from '@/types'
 
@@ -231,6 +232,8 @@ export default function ConfiguracoesPage() {
 
   return (
     <div className="p-6 space-y-4">
+      <PageHeader icon={Settings} title="CONFIGURAÇÕES" />
+
       {/* Tabs */}
       <GlowCard>
         <div className="p-3 flex gap-1 flex-wrap">

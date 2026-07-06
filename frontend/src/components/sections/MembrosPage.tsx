@@ -9,7 +9,7 @@ import {
   useSortable, arrayMove,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Users } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useMembros, useCreateMembro, useUpdateMembro, useDeleteMembro, useReorderMembros } from '@/hooks/useMembros'
 import { usePatentes, useCargos } from '@/hooks/useConfig'
@@ -23,6 +23,7 @@ import AdvBox from '@/components/ui/AdvBox'
 import DragHandle from '@/components/ui/DragHandle'
 import ModalOverlay from '@/components/ui/ModalOverlay'
 import LoadingHud from '@/components/ui/LoadingHud'
+import PageHeader from '@/components/ui/PageHeader'
 import type { Membro, StatusMembro } from '@/types'
 
 interface NovoMembroForm {
@@ -254,6 +255,8 @@ export default function MembrosPage() {
 
   return (
     <div className="p-6 space-y-4">
+      <PageHeader icon={Users} title="MEMBROS DA UNIDADE" />
+
       <GlowCard>
         <div className="p-4 flex items-center gap-4">
           <select

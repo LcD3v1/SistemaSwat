@@ -1,13 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Trash2, ChevronRight, Users, Lock, Unlock } from 'lucide-react'
+import { Plus, Trash2, ChevronRight, Users, Lock, Unlock, UserPlus } from 'lucide-react'
 import { useRecrutos, useCreateRecruta, useDeleteRecruta } from '@/hooks/useRecrutos'
 import { useAuthStore } from '@/store/authStore'
 import { useUIStore } from '@/store/uiStore'
 import GlowCard from '@/components/ui/GlowCard'
 import HudButton from '@/components/ui/HudButton'
 import LoadingHud from '@/components/ui/LoadingHud'
+import ModalOverlay from '@/components/ui/ModalOverlay'
+import PageHeader from '@/components/ui/PageHeader'
+import { staggerContainer, staggerItem } from '@/lib/motion'
 import { formatDate } from '@/lib/utils'
 import type { Recruta } from '@/types'
 
@@ -60,20 +63,20 @@ export default function RecrutamentoPage() {
 
   return (
     <div className="p-6 space-y-4 max-w-3xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="font-orbitron text-sm font-bold text-gold tracking-wider">RECRUTAMENTO</h2>
-        {canEdit && (
+      <PageHeader
+        icon={UserPlus}
+        title="RECRUTAMENTO"
+        actions={canEdit && (
           <HudButton size="sm" onClick={() => setShowModal(true)}>
             <Plus size={14} className="inline mr-1.5" />
             NOVO CANDIDATO
           </HudButton>
         )}
-      </div>
+      />
 
       {/* Lista */}
       <GlowCard>
-        <div className="divide-y divide-bdr">
+        <motion.div className="divide-y divide-bdr" variants={staggerContainer} initial="hidden" animate="visible">
           {(recrutas ?? []).length === 0 ? (
             <p className="text-center font-mono text-xs text-txt3 py-12">Nenhum candidato registrado</p>
           ) : (
@@ -85,8 +88,7 @@ export default function RecrutamentoPage() {
                   <motion.div
                     key={r.id}
                     layout
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    variants={staggerItem}
                     exit={{ opacity: 0 }}
                     onClick={() => navigate(`/recrutamento/${r.id}`)}
                     className="flex items-center gap-4 px-5 py-4 hover:bg-bdr/40 cursor-pointer transition-colors group"
@@ -154,79 +156,60 @@ export default function RecrutamentoPage() {
               })}
             </AnimatePresence>
           )}
-        </div>
+        </motion.div>
       </GlowCard>
 
       {/* Modal novo candidato */}
-      <AnimatePresence>
-        {showModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
+      <ModalOverlay open={showModal} onClose={() => setShowModal(false)} title="NOVO CANDIDATO" maxWidth="max-w-sm">
+        <div className="space-y-3">
+          <div>
+            <label className="font-mono text-xs text-txt2 block mb-1">NOME</label>
+            <input
+              autoFocus
+              value={nome}
+              onChange={e => setNome(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') handleCreate() }}
+              className="input-gold w-full bg-card2 border border-bdr2 rounded px-3 py-2 text-sm font-mono text-txt"
+              placeholder="Nome do candidato"
+            />
+          </div>
+          <div>
+            <label className="font-mono text-xs text-txt2 block mb-1">DATA</label>
+            <input
+              type="date"
+              value={data}
+              onChange={e => setData(e.target.value)}
+              className="input-gold w-full bg-card2 border border-bdr2 rounded px-3 py-2 text-sm font-mono text-txt"
+            />
+          </div>
+          <div>
+            <label className="font-mono text-xs text-txt2 block mb-1">OBSERVAÇÕES</label>
+            <textarea
+              value={observacoes}
+              onChange={e => setObservacoes(e.target.value)}
+              rows={2}
+              className="input-gold w-full bg-card2 border border-bdr2 rounded px-3 py-2 text-sm font-mono text-txt resize-none"
+              placeholder="Opcional..."
+            />
+          </div>
+        </div>
+        <div className="flex gap-2 mt-4">
+          <button
             onClick={() => setShowModal(false)}
+            className="flex-1 py-2 border border-bdr2 rounded font-mono text-xs text-txt3 hover:text-txt transition-colors"
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={e => e.stopPropagation()}
-              className="bg-card border border-bdr rounded-lg p-6 w-full max-w-sm shadow-2xl"
-            >
-              <h3 className="font-orbitron text-xs font-bold text-gold tracking-wider mb-4">NOVO CANDIDATO</h3>
-              <div className="space-y-3">
-                <div>
-                  <label className="font-mono text-xs text-txt2 block mb-1">NOME</label>
-                  <input
-                    autoFocus
-                    value={nome}
-                    onChange={e => setNome(e.target.value)}
-                    onKeyDown={e => { if (e.key === 'Enter') handleCreate() }}
-                    className="input-gold w-full bg-card2 border border-bdr2 rounded px-3 py-2 text-sm font-mono text-txt"
-                    placeholder="Nome do candidato"
-                  />
-                </div>
-                <div>
-                  <label className="font-mono text-xs text-txt2 block mb-1">DATA</label>
-                  <input
-                    type="date"
-                    value={data}
-                    onChange={e => setData(e.target.value)}
-                    className="input-gold w-full bg-card2 border border-bdr2 rounded px-3 py-2 text-sm font-mono text-txt"
-                  />
-                </div>
-                <div>
-                  <label className="font-mono text-xs text-txt2 block mb-1">OBSERVAÇÕES</label>
-                  <textarea
-                    value={observacoes}
-                    onChange={e => setObservacoes(e.target.value)}
-                    rows={2}
-                    className="input-gold w-full bg-card2 border border-bdr2 rounded px-3 py-2 text-sm font-mono text-txt resize-none"
-                    placeholder="Opcional..."
-                  />
-                </div>
-              </div>
-              <div className="flex gap-2 mt-4">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="flex-1 py-2 border border-bdr2 rounded font-mono text-xs text-txt3 hover:text-txt transition-colors"
-                >
-                  CANCELAR
-                </button>
-                <HudButton
-                  onClick={handleCreate}
-                  loading={createRecruta.isPending}
-                  disabled={!nome.trim()}
-                  className="flex-1 justify-center"
-                >
-                  REGISTRAR
-                </HudButton>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            CANCELAR
+          </button>
+          <HudButton
+            onClick={handleCreate}
+            loading={createRecruta.isPending}
+            disabled={!nome.trim()}
+            className="flex-1 justify-center"
+          >
+            REGISTRAR
+          </HudButton>
+        </div>
+      </ModalOverlay>
     </div>
   )
 }

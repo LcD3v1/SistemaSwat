@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Trash2, Download, Filter } from 'lucide-react'
+import { Trash2, Download, Filter, History } from 'lucide-react'
 import { useAcoes, useDeleteAcao } from '@/hooks/useAcoes'
 import { useQrus } from '@/hooks/useConfig'
 import { useMembros } from '@/hooks/useMembros'
@@ -11,6 +11,7 @@ import HudButton from '@/components/ui/HudButton'
 import LoadingHud from '@/components/ui/LoadingHud'
 import { formatDate } from '@/lib/utils'
 import { staggerContainer, staggerItem } from '@/lib/motion'
+import PageHeader from '@/components/ui/PageHeader'
 import type { Acao, Membro } from '@/types'
 import api from '@/lib/axios'
 import { downloadBlob } from '@/lib/utils'
@@ -73,6 +74,8 @@ export default function HistoricoPage() {
 
   return (
     <div className="p-6 space-y-4">
+      <PageHeader icon={History} title="HISTÓRICO DE OPERAÇÕES" />
+
       {/* Filtros */}
       <GlowCard>
         <div className="p-4 flex items-center gap-4 flex-wrap">

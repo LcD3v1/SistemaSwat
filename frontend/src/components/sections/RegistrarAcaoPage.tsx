@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Plus, X, Send, UserX, Shield } from 'lucide-react'
+import { Plus, X, Send, UserX, Shield, Radio } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { useCreateAcao } from '@/hooks/useAcoes'
 import { useQrus } from '@/hooks/useConfig'
@@ -10,6 +10,7 @@ import { useUIStore } from '@/store/uiStore'
 import GlowCard from '@/components/ui/GlowCard'
 import HudButton from '@/components/ui/HudButton'
 import LoadingHud from '@/components/ui/LoadingHud'
+import PageHeader from '@/components/ui/PageHeader'
 import type { ResultadoAcao, Membro } from '@/types'
 
 interface FormData {
@@ -113,13 +114,11 @@ export default function RegistrarAcaoPage() {
   if (qrusLoading || membrosLoading) return <LoadingHud />
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto space-y-4">
+      <PageHeader icon={Radio} title="REGISTRAR AÇÃO" />
+
       <GlowCard>
         <div className="p-6">
-          <h2 className="font-orbitron text-sm font-bold text-gold tracking-wider mb-6">
-            NOVA OPERAÇÃO
-          </h2>
-
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             {/* Data */}
             <div>

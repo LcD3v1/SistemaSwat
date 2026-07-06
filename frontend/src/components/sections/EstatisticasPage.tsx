@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Download, X, Calendar } from 'lucide-react'
+import { Download, X, Calendar, BarChart2 } from 'lucide-react'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import {
@@ -15,6 +15,7 @@ import HudButton from '@/components/ui/HudButton'
 import LoadingHud from '@/components/ui/LoadingHud'
 import { calcWinRate } from '@/lib/utils'
 import { staggerContainer, staggerItem } from '@/lib/motion'
+import PageHeader from '@/components/ui/PageHeader'
 import type { Membro, Acao } from '@/types'
 
 const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
@@ -239,6 +240,8 @@ export default function EstatisticasPage() {
 
   return (
     <div className="p-6 space-y-6">
+      <PageHeader icon={BarChart2} title="ESTATÍSTICAS" />
+
       {/* Filtros e exportação */}
       <GlowCard>
         <div className="p-4 flex items-center gap-4 flex-wrap">
