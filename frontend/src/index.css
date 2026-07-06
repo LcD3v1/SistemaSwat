@@ -128,8 +128,14 @@ h1, h2, h3, .font-orbitron {
 .cyber-card {
   --cut: 12px;
   position: relative;
-  background: var(--card);
-  border: 1px solid rgba(201,162,39,0.3);
+  background:
+    linear-gradient(90deg, transparent 6%, rgba(201,162,39,0.55) 50%, transparent 94%) top / 100% 2px no-repeat,
+    radial-gradient(130% 90% at 50% -12%, rgba(201,162,39,0.07), transparent 62%),
+    linear-gradient(158deg, #191921 0%, #131318 42%, #0e0e12 100%);
+  border: 1px solid rgba(201,162,39,0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    inset 0 0 40px rgba(0,0,0,0.45);
   clip-path: polygon(
     var(--cut) 0%,
     100% 0%,
@@ -138,12 +144,15 @@ h1, h2, h3, .font-orbitron {
     0% 100%,
     0% var(--cut)
   );
-  transition: border-color 0.35s ease, background 0.35s ease;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
   overflow: hidden;
 }
 .cyber-card-wrap:hover .cyber-card {
-  border-color: rgba(201,162,39,0.75);
-  background: #111111;
+  border-color: rgba(201,162,39,0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 0 40px rgba(201,162,39,0.06),
+    inset 0 -40px 60px rgba(0,0,0,0.35);
 }
 
 /* Linha diagonal decorativa nos cantos cortados */
